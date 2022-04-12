@@ -25,8 +25,6 @@ const passwordReducer = (state, action) => {
 };
 
 const Login = (props) => {
-  // const [enteredPassword, setEnteredPassword] = useState("");
-  // const [passwordIsValid, setPasswordIsValid] = useState();
   const [formIsValid, setFormIsValid] = useState(false);
 
   const [emailState, dispatchEmail] = useReducer(emailReducer, {
@@ -39,41 +37,40 @@ const Login = (props) => {
     isValid: null,
   });
 
-  // useEffect(()=>{
-  //   console.log('effect running')
-  // },[])
+  const {isValid:emailIsValid} = emailState;
+  const {isValid:passwordIsValid} = passwordState;
 
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     console.log("checking validity");
-  //     setFormIsValid(
-  //       enteredEmail.includes("@") && enteredPassword.trim().length > 6
-  //     );
-  //   }, 1000);
+  useEffect(()=>{
+    console.log('effect running')
+  },[])
 
-  //   return () => {
-  //     clearTimeout(timer);
-  //   };
-  // }, [enteredEmail, enteredPassword]);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      console.log("checking validity");
+      setFormIsValid(
+        emailIsValid && passwordIsValid
+      );
+    }, 1000);
+
+    return () => {
+      console.log("clean-up")
+      clearTimeout(timer);
+    };
+  }, [emailIsValid, passwordIsValid]);
 
   const emailChangeHandler = (event) => {
     dispatchEmail({ type: "USER_INPUT", val: event.target.value });
-
-    setFormIsValid(event.target.value.includes("@") && passwordState.isValid);
   };
   const validateEmailHandler = () => {
-    // setEmailIsValid(emailState.isValid);
+    
     dispatchEmail({ type: "INPUT_BLUR" });
   };
   ///////////////////////////////////////////////
   const passwordChangeHandler = (event) => {
     dispatchPassword({ type: "USER_INPUT", val: event.target.value });
-
-    setFormIsValid(emailState.isValid && event.target.value.trim().length > 6);
   };
 
   const validatePasswordHandler = () => {
-    // setPasswordIsValid(enteredPassword.trim().length > 6);
     dispatchPassword({ type: "INPUT_BLUR" });
   };
   ///////////////////////////////////////////////
